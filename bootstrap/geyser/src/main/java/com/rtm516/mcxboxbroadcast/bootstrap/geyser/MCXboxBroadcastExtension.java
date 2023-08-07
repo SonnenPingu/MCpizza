@@ -128,13 +128,11 @@ public class MCXboxBroadcastExtension implements Extension {
             // Start the update timer
             GeyserImpl.getInstance().getScheduledThread().scheduleWithFixedDelay(this::tick, config.updateInterval, config.updateInterval, TimeUnit.SECONDS); // TODO Find API equivalent
 
-            // Due to API limitations stated in the config, need a separate update timer
+            // Start a timer for the friend sync if enabled
             if (config.friendSyncConfig.autoFollow || config.friendSyncConfig.autoUnfollow) {
-                GeyserImpl.getInstance().getScheduledThread().scheduleAtFixedRate(() -> FriendUtils.autoFriend(sessionManager, logger, config), config.friendSyncConfig.updateInterval, config.friendSyncConfig.updateInterval, TimeUnit.SECONDS);
+                GeyserImpl.getInstance().getScheduledThread().scheduleAtFixedRate(() -> FriendUtils.autoFriend(sessionManager, logger, config.friendSyncConfig), config.friendSyncConfig.updateInterval, config.friendSyncConfig.updateInterval, TimeUnit.SECONDS);
             }
-
         }).start();
-
     }
 
     private void tick() {
